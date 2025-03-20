@@ -4,7 +4,7 @@ A QR Code Generator for currently only for Android, I built it by using python w
 
 
 
-A cross-platform QR code generator app built using Kivy and KivyMD. This app allows users to generate QR codes from input text and save or remove them on Android, Windows, and Linux platforms.
+A cross-platform QR code generator app built using [Kivy](https://kivy.org/) and [KivyMD](https://pypi.org/project/kivymd/). This app allows users to generate QR codes from input text and save or remove them on Android, Windows, and Linux platforms.
 
 ## Features
 - Generate QR codes from user-input text.
@@ -23,6 +23,6 @@ A cross-platform QR code generator app built using Kivy and KivyMD. This app all
 To run this app, you need to have Python 3.6+ installed along with the required dependencies.
 
 ### Install dependencies:
-
+- I added `buildozer` to the `pip install` command for the dependencies. For more installation information follow the [Buildozer Documentation](https://buildozer.readthedocs.io/en/latest/):
 ```bash
-pip install kivy, kivymd, qrcode
+pip install kivy, kivymd, qrcode, buildozer
