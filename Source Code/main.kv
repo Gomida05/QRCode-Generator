@@ -1,0 +1,182 @@
+<Screen1>:
+    
+    txt: txt
+    img: img
+    ans:ans
+    MDBoxLayout
+        orientation: "vertical"
+        spacing: 5
+
+        MDTopAppBar:
+            type: "small"
+            use_overflow: True
+            halign: "center"
+            pos_hint: {"y": 1}
+            theme_bg_color: "Custom"
+            md_bg_color: "black"
+
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: "menu"
+                    color: "white"
+                    on_press: root.soon()
+
+            MDTopAppBarTitle:
+                text: "QRcode Ggenerator"
+                color: "white"
+                pos_hint: {"center_x": .5}
+
+        
+
+
+    
+        
+
+        MDTextField:
+            id: txt
+            mode: "filled"
+            on_text_validate: root.generate()
+            theme_bg_color: "Custom"
+            text_color_normal: "black"
+            text_color_focus: "black"
+            fill_color_normal: "white"
+            fill_color_focus: "white"
+            theme_line_color: "Custom"
+            line_color_normal: "green"
+            line_color_focus: "green"
+            MDTextFieldHintText:
+                text: "Please enter the text you want to for QRcode"
+                text_color_focus: "black"
+
+        
+        
+    
+        MDCard:
+            size_hint: .4, .23
+            theme_bg_color: "Custom"
+            md_bg_color: "green"
+            pos_hint: {"center_x": .5, "center_y": .6}
+            ripple_behavior: True
+            on_release: root.generate()
+
+            MDRelativeLayout:
+                MDLabel:
+                    text: "Generate"
+                    adaptive_size: True
+                    color: "black"
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    #pos: "12dp", "12dp"
+                    bold: True
+    
+
+
+    
+        MDCard:
+            size_hint: .4, .23
+            #size: "280dp", "180dp"
+            theme_bg_color: "Custom"
+            md_bg_color: "black"
+            pos_hint: {"center_x": .5, "center_y": .6}
+            ripple_behavior: True
+            on_press: root.manager.current= "screen2"
+
+            MDRelativeLayout:
+                MDLabel:
+                    text: "Go to next Screen"
+                    adaptive_size: True
+                    color: "white"
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    #pos: "12dp", "12dp"
+                    bold: True
+    
+        MDBoxLayout:
+            orientation: "horizontal"
+            padding: 5
+    
+      
+            MDFabButton:
+                icon: "delete"
+                theme_bg_color: "Custom"
+                md_bg_color: "black"
+                theme_icon_color: "Custom"
+                icon_color: "red"
+                on_press: root.remove_its()
+            MDBoxLayout:
+                orientation: "vertical"
+                #size_hint: 1, 1
+    
+                MDLabel:
+                    id: ans
+                    text: "Enter the link or text on the text feild"
+                    adaptive_size: True
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    halign: "center"
+            
+                
+                Image:
+                    id: img
+                    adaptive_size: True
+                   # size_hint: 1, .7
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    color: "white"
+                    source: ""
+                    fit_mode: "contain"
+        
+            MDFabButton:
+                icon: "content-save"
+                theme_bg_color: "Custom"
+                md_bg_color: "black"
+                theme_icon_color: "Custom"
+                icon_color: "green"
+                on_press: root.save_as()
+
+
+
+
+
+
+
+<screen2>:
+    
+    
+    MDBoxLayout:
+        orientation: "vertical"
+        pos_hint: {"center_x": .5, "center_y": .5}
+        size_hint: .83, .88
+        radius: [25, 25, 25, 25]
+        md_bg_color: "black"
+
+
+        MDLabel:
+            text: "Please fill the details for your QRcode"
+            halign: "center"
+            theme_bg_color: "Custom"
+            md_bg_color: "green"
+            size_hint_y: .1
+
+
+        MDTextField:
+            id: texts
+            #mode: "outlined"
+            hint_text: "Enter file name for your QRcode"
+            size_hint_x: .8
+            #size_hint_y: .1
+            radius: 25,25,25,25
+            pos_hint: {"center_x": .5, "center_y": .5}
+            on_text_validate: root.field()
+            font_size: 20
+            padding: 10, 10, 10, 10
+        
+        MDFabButton:
+            icon: "power"
+            color: "green"
+            adaptive_size: True
+            on_press: root.test()
+
+        
+        MDFabButton:
+            icon: "arrow-left"
+            adaptive_size: True
+            on_press: root.manager.current= "screen1"
+        
+ 
