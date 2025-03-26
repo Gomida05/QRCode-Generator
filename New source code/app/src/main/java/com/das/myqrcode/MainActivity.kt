@@ -1,10 +1,11 @@
 package com.das.myqrcode
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import com.das.myqrcode.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
+
 
 
 
