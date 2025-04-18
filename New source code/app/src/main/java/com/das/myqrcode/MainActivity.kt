@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.QrCode
+import androidx.compose.material.icons.filled.QrCode2
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
@@ -41,7 +42,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.das.myqrcode.ui.generator.HomeFragmentUI
+import com.das.myqrcode.ui.generator.GenerateBarCode
+import com.das.myqrcode.ui.generator.GenerateQRCode
 import com.das.myqrcode.ui.scanner.QRScanner
 
 class MainActivity : ComponentActivity() {
@@ -106,7 +108,7 @@ class MainActivity : ComponentActivity() {
 
                         val newIntent = backStackEntry.arguments?.getString("newIntent")
                         CustomTheme {
-                            HomeFragmentUI(
+                            GenerateQRCode(
                                 onNavigateBack = {
                                     // Navigate to Screen B
                                     navController.navigate("MainPage") {
@@ -126,6 +128,18 @@ class MainActivity : ComponentActivity() {
                             }
                             )
 
+                        }
+                    }
+                    composable("GenerateBarCode") {
+                        CustomTheme {
+                            GenerateBarCode(
+                                onNavigateBack = {
+                                    // Navigate to Screen B
+                                    navController.navigate("MainPage") {
+                                        popUpTo("MainPage") { inclusive = true }
+                                    }
+                                }
+                            )
                         }
                     }
                 }
@@ -196,7 +210,7 @@ class MainActivity : ComponentActivity() {
                         // QR Code Scanner Button
                         Button(
                             onClick = {
-                                navController.navigate("scanner")
+                                navController.navigate("GenerateBarCode")
                             },
                             modifier = Modifier
                                 .align(Alignment.CenterHorizontally)
@@ -205,11 +219,11 @@ class MainActivity : ComponentActivity() {
                                 .scale(1.05f) // Slight scale effect on hover
                         ) {
                             Icon(
-                                painter = rememberVectorPainter(Icons.Default.QrCodeScanner),
+                                painter = rememberVectorPainter(Icons.Default.QrCode2),
                                 contentDescription = "QR Code Scanner",
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = "Scan QR")
+                            Text(text = "BarCode Generator")
                         }
                     }
                 }

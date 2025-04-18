@@ -31,6 +31,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -48,6 +49,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.documentfile.provider.DocumentFile
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
@@ -59,7 +61,7 @@ import kotlin.Any
 
 
 @Composable
-fun HomeFragmentUI(onNavigateBack: () -> Unit, textValue: String = "") {
+fun GenerateQRCode(onNavigateBack: ()-> Unit, textValue: String = "") {
 
     val textState: MutableState<String> = remember { mutableStateOf(textValue) }
     val context = LocalContext.current
@@ -141,8 +143,7 @@ fun HomeFragmentUI(onNavigateBack: () -> Unit, textValue: String = "") {
                     if (textState.value.isNotBlank()) {
                         bitmapState.value = generateQRCode(textState.value)
                     } else {
-                        Toast.makeText(context, "Please enter something", Toast.LENGTH_SHORT)
-                            .show()
+                        showToast(context, "Please enter something")
                     }
                 },
                 modifier = Modifier
@@ -182,8 +183,7 @@ fun HomeFragmentUI(onNavigateBack: () -> Unit, textValue: String = "") {
                     Button(
                         onClick = {
                             bitmapState.value = null
-                            Toast.makeText(context, "QR code deleted", Toast.LENGTH_SHORT)
-                                .show()
+                            showToast(context, "QR code deleted")
                         },
                         modifier = Modifier
                             .size(100.dp)
@@ -230,6 +230,29 @@ fun HomeFragmentUI(onNavigateBack: () -> Unit, textValue: String = "") {
 
 }
 
+//@Preview
+@Composable
+private fun CustomQRCode(){
+    Dialog(
+        onDismissRequest = { }
+    ) {
+        Column {
+            Text("")
+
+            TextButton(
+                onClick = { }
+            ) {
+                Text("Select colours")
+            }
+
+        }
+    }
+}
+
+private fun showToast(context: Context, content: String){
+    Toast.makeText(context, content, Toast.LENGTH_SHORT).show()
+}
+
 
 private fun generateQRCode(content: String): ImageBitmap {
     val writer = MultiFormatWriter()
@@ -238,6 +261,7 @@ private fun generateQRCode(content: String): ImageBitmap {
         EncodeHintType.MARGIN to 1,
         EncodeHintType.ERROR_CORRECTION to com.google.zxing.qrcode.decoder.ErrorCorrectionLevel.L,
     )
+
 
     val bitMatrix: BitMatrix = writer.encode(content, BarcodeFormat.QR_CODE, 512, 512, hints)
 
@@ -285,21 +309,18 @@ private fun saveQRCodeToExternalStorage(uri: Uri, bitmap: ImageBitmap?, context:
                         null,
                         null
                     )
-                    Toast.makeText(context, "QR Code saved to gallery!", Toast.LENGTH_SHORT)
-                        .show()
+                    showToast(context, "QR Code saved to gallery!")
                 }
             } catch (e: IOException) {
-                Toast.makeText(
+                showToast(
                     context,
-                    "Error saving QR Code: ${e.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                    "Error saving QR Code: ${e.message}"
+                )
             }
         } ?: run {
-            Toast.makeText(context, "Failed to create file", Toast.LENGTH_SHORT).show()
+            showToast(context, "Failed to create file")
         }
     } else {
-        Toast.makeText(context, "Selected path is not a valid directory", Toast.LENGTH_SHORT)
-            .show()
+        showToast(context, "Selected path is not a valid directory")
     }
 }
