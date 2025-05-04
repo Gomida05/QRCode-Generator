@@ -1,6 +1,5 @@
 package com.das.myqrcode.ui.generator
 
-
 import android.content.Context
 import android.graphics.Bitmap
 import android.media.MediaScannerConnection
@@ -22,8 +21,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Draw
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -34,7 +35,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -59,13 +59,12 @@ import java.io.IOException
 import kotlin.Any
 
 
-
 @Composable
-fun GenerateQRCode(onNavigateBack: ()-> Unit, textValue: String = "") {
+fun GenerateQRCode(onNavigateBack: ()-> Unit = {}, textValue: String = "") {
 
-    val textState: MutableState<String> = remember { mutableStateOf(textValue) }
+    val textState = remember { mutableStateOf(textValue) }
     val context = LocalContext.current
-    val bitmapState: MutableState<ImageBitmap?> = remember { mutableStateOf(null) }
+    val bitmapState = remember { mutableStateOf<ImageBitmap?>(null) }
 
     val saveQrCodeLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocumentTree(),
@@ -108,11 +107,19 @@ fun GenerateQRCode(onNavigateBack: ()-> Unit, textValue: String = "") {
                     .clip(RoundedCornerShape(28)),
 
                 textStyle = MaterialTheme.typography.bodyMedium,
+
+                leadingIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(imageVector = Icons.AutoMirrored.Default.ArrowBack, "navigateUp")
+                    }
+                },
+
+
                 trailingIcon = {
                     if (textState.value.isNotEmpty()) {
                         IconButton(onClick = { textState.value = "" }) {
                             Icon(
-                                painter = rememberVectorPainter(Icons.Default.Close),
+                                imageVector = Icons.Default.Close,
                                 contentDescription = "Clear"
                             )
                         }
@@ -151,9 +158,25 @@ fun GenerateQRCode(onNavigateBack: ()-> Unit, textValue: String = "") {
                     .padding(vertical = 8.dp)
                     .align(Alignment.CenterHorizontally)
                     .height(56.dp),
-                shape = MaterialTheme.shapes.large
+                shape = RoundedCornerShape(15)
             ) {
-                Text("Generate", style = MaterialTheme.typography.bodyLarge)
+
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        "Generate",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+
+                    Icon(
+                        imageVector = Icons.Default.Draw,
+                        "",
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                    )
+                }
             }
 
             bitmapState.value?.let { imageBitmap ->
@@ -299,7 +322,7 @@ private fun saveQRCodeToExternalStorage(uri: Uri, bitmap: ImageBitmap?, context:
             try {
                 val outputStream = context.contentResolver.openOutputStream(it.uri)
                 outputStream?.let { os ->
-                    bitmap?.asAndroidBitmap()?.compress(Bitmap.CompressFormat.PNG, 100, os)
+                    bitmap?.asAndroidBitmap()?.compress(Bitmap.CompressFormat.JPEG, 100, os)
                     os.close()
 
                     // Scan the file so it appears in the gallery

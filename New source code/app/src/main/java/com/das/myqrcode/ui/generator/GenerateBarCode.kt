@@ -21,8 +21,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Draw
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -33,7 +35,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -104,6 +105,11 @@ fun GenerateBarCode(onNavigateBack: ()-> Unit){
                     .clip(RoundedCornerShape(28)),
 
                 textStyle = MaterialTheme.typography.bodyMedium,
+                leadingIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(imageVector = Icons.AutoMirrored.Default.ArrowBack, "navigateUp")
+                    }
+                },
                 trailingIcon = {
                     if (textState.value.isNotEmpty()) {
                         IconButton(onClick = { textState.value = "" }) {
@@ -149,7 +155,22 @@ fun GenerateBarCode(onNavigateBack: ()-> Unit){
                     .height(56.dp),
                 shape = MaterialTheme.shapes.large
             ) {
-                Text("Generate", style = MaterialTheme.typography.bodyLarge)
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        "Generate",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+
+                    Icon(
+                        imageVector = Icons.Default.Draw,
+                        "",
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                    )
+                }
             }
 
             bitmapState.value?.let { imageBitmap ->
